@@ -1,0 +1,49 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.py[cod]
+.coverage
+coverage.xml
+htmlcov/
+*.log
+*.tmp
+*.bak
+
+# Local credentials and machine-specific settings never enter source control.
+.streamlit/secrets.toml
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Editor and operating-system files.
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store
+
+# User listing packages, product media, exports, and local databases stay local.
+# A reviewed project-owned fixture or asset must be explicitly unignored first.
+*.json
+*.csv
+*.tsv
+*.xlsx
+*.xls
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+*.heic
+*.avif
+*.db
+*.sqlite
+*.sqlite3
+/uploads/
+/data/
+/artifacts/
