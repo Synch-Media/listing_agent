@@ -37,19 +37,50 @@ operator chooses and reviews the final price.
 
 ## Setup
 
-Open PowerShell in this folder and run:
+Python 3.12 or newer is required. Create a new virtual environment on each
+computer; a `.venv` folder copied from another computer will not be portable.
+
+On Windows, open PowerShell in this folder and run:
+
+```powershell
+python -m venv --clear .venv
+```
+
+For normal use, install the locked runtime dependencies:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+For development and verification, install the runtime dependencies plus pytest
+and Ruff instead:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
+```
+
+On macOS or Linux, use `python3 -m venv --clear .venv` and replace
+`.\.venv\Scripts\python.exe` with `./.venv/bin/python` in these commands.
+
+If `uv` is installed, it can set up the application and development tools
+directly from `pyproject.toml` and `uv.lock`:
 
 ```powershell
 uv sync --all-groups
 ```
 
+`pyproject.toml` is the dependency source of truth. `uv.lock` is the canonical
+lock file; `requirements.txt` and `requirements-dev.txt` are generated from it
+for pip compatibility.
+
 ## Run
 
 ```powershell
-uv run streamlit run streamlit_app.py
+.\.venv\Scripts\python.exe -m streamlit run streamlit_app.py
 ```
 
 Streamlit will show the local address, normally `http://localhost:8501`.
+With a `uv` setup, `uv run streamlit run streamlit_app.py` is equivalent.
 
 ## Use
 
@@ -195,7 +226,21 @@ the local application.
 ## Verify
 
 ```powershell
-uv run pytest
-uv run ruff check .
-uv run ruff format --check .
+.\.venv\Scripts\python.exe -m pytest
+.\.venv\Scripts\ruff.exe check .
+.\.venv\Scripts\ruff.exe format --check .
+```
+
+With a `uv` setup, the equivalent commands are `uv run pytest`,
+`uv run ruff check .`, and `uv run ruff format --check .`.
+On macOS or Linux, use `./.venv/bin/python -m pytest` and
+`./.venv/bin/ruff` in place of the Windows executables.
+
+After changing a dependency in `pyproject.toml`, update `uv.lock`, then
+regenerate both pip files:
+
+```powershell
+uv lock
+uv export --locked --no-dev --no-emit-project --format requirements.txt --no-hashes --output-file requirements.txt
+uv export --locked --all-groups --no-emit-project --format requirements.txt --no-hashes --output-file requirements-dev.txt
 ```
